@@ -98,3 +98,9 @@ FString ABGGameModeBase::JudgeGuess(const FString& InSecretNumberString, const F
 	return FString::Printf(TEXT("%dS %dB"), Strike, Ball);
 }
 
+void ABGGameModeBase::ResetGame()
+{
+	SecretNumberString = GenerateSecretNumber();
+
+	UE_LOG(LogTemp, Warning, TEXT("[Server] Game Reset! New Secret Number: %s"), *SecretNumberString);
+}

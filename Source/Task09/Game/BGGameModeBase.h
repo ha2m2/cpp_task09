@@ -27,6 +27,8 @@ public:
 
 	FString JudgeGuess(const FString& InSecretNumberString, const FString& InGuessNumberString);
 
+	void ResetGame();
+
 private:
 	FString SecretNumberString;
 };
