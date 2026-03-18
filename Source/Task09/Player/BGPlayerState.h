@@ -17,4 +17,25 @@ class TASK09_API ABGPlayerState : public APlayerState
 public:
 	ABGPlayerState();
 
+protected:
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
+public:
+	void AddGuessCount();
+
+	bool IsOutOfChances() const;
+
+	FString GetGuessStateString() const;
+
+public:
+	UPROPERTY(Replicated)
+	int32 CurrentGuessCount;
+
+	UPROPERTY(Replicated)
+	int32 MaxGuessCount;
+
+	/* 테스트용
+	UFUNCTION()
+	void OnRep_CurrentGuessCount();
+	*/
 };

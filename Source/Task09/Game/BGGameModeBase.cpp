@@ -2,7 +2,6 @@
 
 
 #include "Game/BGGameModeBase.h"
-#include "Math/UnrealMathUtility.h"
 
 ABGGameModeBase::ABGGameModeBase()
 {
