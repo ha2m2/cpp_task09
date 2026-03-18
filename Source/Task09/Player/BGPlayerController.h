@@ -32,4 +32,7 @@ protected:
 public:
 	UFUNCTION(Server, Reliable)
 	void ServerProcessGuess(const FString& InGuessString);
+
+	UFUNCTION(Client, Reliable)
+	void ClientShowNotification(const FString& Message);
 };
