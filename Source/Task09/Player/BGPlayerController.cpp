@@ -28,6 +28,12 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 
 	if (GM && PS)
 	{
+		if (PS->IsOutOfChances())
+		{
+			ClientShowNotification(TEXT("You are already out of chances."));
+			return;
+		}
+
 		if (!GM->IsValidNumberString(InGuessString))
 		{
 			UE_LOG(LogTemp, Error, TEXT("[Server] Invalid Input from %s"), *PS->GetPlayerName());
@@ -47,12 +53,15 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 			GM->BroadcastResultAndReset(WinMsg);
 		}
 
-		else if (PS->IsOutOfChances())
+		else if (GM->CheckAllPlayersOutOfChances())
 		{
-			FString LoseMsg = FString::Printf(TEXT("Player %s Out of Chances! Game Over."), *PS->GetPlayerName());
-			GM->BroadcastResultAndReset(LoseMsg);
+			GM->BroadcastResultAndReset(TEXT("DRAW! All players are out of chances."));
 		}
 
+		else if (PS->IsOutOfChances())
+		{
+			ClientShowNotification(TEXT("Out of chances. Waiting for others..."));
+		}
 	}
 }
 
