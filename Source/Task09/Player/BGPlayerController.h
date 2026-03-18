@@ -15,11 +15,13 @@ class TASK09_API ABGPlayerController : public APlayerController
 	GENERATED_BODY()
 
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
-	TSubclassOf<class UUserWidget> ChatInputWidgetClass;
+	TSubclassOf<class UBGChatInput> ChatInputWidgetClass;
 
 	UPROPERTY()
-	TObjectPtr<class UUserWidget> ChatInputWidgetInstance;
+	TObjectPtr<class UBGChatInput> ChatInputWidgetInstance;
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<class UUserWidget> NotificationWidgetClass;
@@ -27,4 +29,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UUserWidget> NotificationWidgetInstance;
 
+public:
+	UFUNCTION(Server, Reliable)
+	void ServerProcessGuess(const FString& InGuessString);
 };
