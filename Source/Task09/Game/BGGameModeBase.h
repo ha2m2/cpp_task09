@@ -23,6 +23,8 @@ protected:
 public:
 	FString GenerateSecretNumber();
 
+	FString GetSecretNumber() const { return SecretNumberString; }
+
 	bool IsValidNumberString(const FString& InNumberString);
 
 	FString JudgeGuess(const FString& InSecretNumberString, const FString& InGuessNumberString);
