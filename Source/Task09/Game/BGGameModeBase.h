@@ -31,6 +31,8 @@ public:
 
 	void ResetGame();
 
+	void BroadcastResultAndReset(const FString& ResultMessage);
+
 private:
 	FString SecretNumberString;
 };

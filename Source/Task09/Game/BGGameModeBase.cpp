@@ -2,6 +2,9 @@
 
 
 #include "Game/BGGameModeBase.h"
+#include "Player/BGPlayerController.h"
+#include "Player/BGPlayerState.h"
+#include "EngineUtils.h"
 
 ABGGameModeBase::ABGGameModeBase()
 {
@@ -101,5 +104,26 @@ void ABGGameModeBase::ResetGame()
 {
 	SecretNumberString = GenerateSecretNumber();
 
+	UE_LOG(LogTemp, Warning, TEXT("[Server] Game Reset! New Secret Number: %s"), *SecretNumberString);
+}
+
+void ABGGameModeBase::BroadcastResultAndReset(const FString& ResultMessage)
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		ABGPlayerController* PC = Cast<ABGPlayerController>(It->Get());
+		if (PC)
+		{
+			PC->ClientShowNotification(ResultMessage);
+
+			ABGPlayerState* PS = PC->GetPlayerState<ABGPlayerState>();
+			if (PS)
+			{
+				PS->CurrentGuessCount = 0;
+			}
+		}
+	}
+
+	SecretNumberString = GenerateSecretNumber();
 	UE_LOG(LogTemp, Warning, TEXT("[Server] Game Reset! New Secret Number: %s"), *SecretNumberString);
 }
