@@ -25,9 +25,11 @@ public:
 
 	FString GetSecretNumber() const { return SecretNumberString; }
 
+	FString JudgeGuess(const FString& InSecretNumberString, const FString& InGuessNumberString);
+
 	bool IsValidNumberString(const FString& InNumberString);
 
-	FString JudgeGuess(const FString& InSecretNumberString, const FString& InGuessNumberString);
+	bool CheckAllPlayersOutOfChances();
 
 	void ResetGame();
 
