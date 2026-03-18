@@ -41,6 +41,18 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 		UE_LOG(LogTemp, Warning, TEXT("Player [%s] Guess: %s -> Result: %s %s"),
 			*PS->GetPlayerName(), *InGuessString, *Result, *PS->GetGuessStateString());
 
+		if (Result == TEXT("3S 0B"))
+		{
+			FString WinMsg = FString::Printf(TEXT("Player %s WIN!"), *PS->GetPlayerName());
+			GM->BroadcastResultAndReset(WinMsg);
+		}
+
+		else if (PS->IsOutOfChances())
+		{
+			FString LoseMsg = FString::Printf(TEXT("Player %s Out of Chances! Game Over."), *PS->GetPlayerName());
+			GM->BroadcastResultAndReset(LoseMsg);
+		}
+
 	}
 }
 
