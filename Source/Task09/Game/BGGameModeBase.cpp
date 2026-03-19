@@ -2,6 +2,9 @@
 
 
 #include "Game/BGGameModeBase.h"
+#include "Player/BGPlayerController.h"
+#include "Player/BGPlayerState.h"
+#include "EngineUtils.h"
 
 ABGGameModeBase::ABGGameModeBase()
 {
@@ -38,33 +41,6 @@ FString ABGGameModeBase::GenerateSecretNumber()
 	return Result;
 }
 
-bool ABGGameModeBase::IsValidNumberString(const FString& InNumberString)
-{
-	if (InNumberString.Len() != 3)
-	{
-		return false;
-	}
-
-	TSet<TCHAR> UniqueChars;
-	for (int32 i = 0; i < 3; ++i)
-	{
-		TCHAR c = InNumberString[i];
-
-		if (c < '1' || c > '9')
-		{
-			return false;
-		}
-		UniqueChars.Add(c);
-	}
-
-	if (UniqueChars.Num() != 3)
-	{
-		return false;
-	}
-
-	return true;
-}
-
 FString ABGGameModeBase::JudgeGuess(const FString& InSecretNumberString, const FString& InGuessNumberString)
 {
 	int32 Strike = 0;
@@ -97,9 +73,79 @@ FString ABGGameModeBase::JudgeGuess(const FString& InSecretNumberString, const F
 	return FString::Printf(TEXT("%dS %dB"), Strike, Ball);
 }
 
+bool ABGGameModeBase::IsValidNumberString(const FString& InNumberString)
+{
+	if (InNumberString.Len() != 3)
+	{
+		return false;
+	}
+
+	TSet<TCHAR> UniqueChars;
+	for (int32 i = 0; i < 3; ++i)
+	{
+		TCHAR c = InNumberString[i];
+
+		if (c < '1' || c > '9')
+		{
+			return false;
+		}
+		UniqueChars.Add(c);
+	}
+
+	if (UniqueChars.Num() != 3)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool ABGGameModeBase::CheckAllPlayersOutOfChances()
+{
+	int32 TotalPlayers = 0;
+	int32 OutPlayers = 0;
+
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		ABGPlayerController* PC = Cast<ABGPlayerController>(It->Get());
+		if (PC)
+		{
+			TotalPlayers++;
+			ABGPlayerState* PS = PC->GetPlayerState<ABGPlayerState>();
+
+			if (PS && PS->IsOutOfChances())
+			{
+				OutPlayers++;
+			}
+		}
+	}
+
+	return (TotalPlayers > 0 && TotalPlayers == OutPlayers);
+}
+
 void ABGGameModeBase::ResetGame()
 {
 	SecretNumberString = GenerateSecretNumber();
 
 	UE_LOG(LogTemp, Warning, TEXT("[Server] Game Reset! New Secret Number: %s"), *SecretNumberString);
+}
+
+void ABGGameModeBase::BroadcastResultAndReset(const FString& ResultMessage)
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		ABGPlayerController* PC = Cast<ABGPlayerController>(It->Get());
+		if (PC)
+		{
+			PC->ClientShowNotification(ResultMessage);
+
+			ABGPlayerState* PS = PC->GetPlayerState<ABGPlayerState>();
+			if (PS)
+			{
+				PS->CurrentGuessCount = 0;
+			}
+		}
+	}
+
+	ResetGame();
 }

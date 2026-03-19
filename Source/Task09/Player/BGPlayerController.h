@@ -24,12 +24,15 @@ protected:
 	TObjectPtr<class UBGChatInput> ChatInputWidgetInstance;
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
-	TSubclassOf<class UUserWidget> NotificationWidgetClass;
+	TSubclassOf<class UBGNotificationWidget> NotificationWidgetClass;
 
 	UPROPERTY()
-	TObjectPtr<class UUserWidget> NotificationWidgetInstance;
+	TObjectPtr<class UBGNotificationWidget> NotificationWidgetInstance;
 
 public:
 	UFUNCTION(Server, Reliable)
 	void ServerProcessGuess(const FString& InGuessString);
+
+	UFUNCTION(Client, Reliable)
+	void ClientShowNotification(const FString& Message);
 };
