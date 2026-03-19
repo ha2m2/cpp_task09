@@ -5,6 +5,7 @@
 #include "Player/BGPlayerState.h"
 #include "Game/BGGameModeBase.h"
 #include "UI/BGChatInput.h"
+#include "UI/BGNotificationWidget.h"
 #include "Blueprint/UserWidget.h"
 
 void ABGPlayerController::BeginPlay()
@@ -71,12 +72,17 @@ void ABGPlayerController::ClientShowNotification_Implementation(const FString& M
 	{
 		if (!NotificationWidgetInstance)
 		{
-			NotificationWidgetInstance = CreateWidget<UUserWidget>(this, NotificationWidgetClass);
+			NotificationWidgetInstance = CreateWidget<UBGNotificationWidget>(this, NotificationWidgetClass);
 		}
 
 		if (NotificationWidgetInstance && !NotificationWidgetInstance->IsInViewport())
 		{
 			NotificationWidgetInstance->AddToViewport();
+		}
+
+		if (NotificationWidgetInstance)
+		{
+			NotificationWidgetInstance->SetNotificationText(Message);
 		}
 	}
 

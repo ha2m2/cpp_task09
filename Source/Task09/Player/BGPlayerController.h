@@ -24,10 +24,10 @@ protected:
 	TObjectPtr<class UBGChatInput> ChatInputWidgetInstance;
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
-	TSubclassOf<class UUserWidget> NotificationWidgetClass;
+	TSubclassOf<class UBGNotificationWidget> NotificationWidgetClass;
 
 	UPROPERTY()
-	TObjectPtr<class UUserWidget> NotificationWidgetInstance;
+	TObjectPtr<class UBGNotificationWidget> NotificationWidgetInstance;
 
 public:
 	UFUNCTION(Server, Reliable)
