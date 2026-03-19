@@ -31,7 +31,7 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 	{
 		if (PS->IsOutOfChances())
 		{
-			ClientShowNotification(TEXT("You are already out of chances."));
+			ClientShowNotification(TEXT("이미 모든 기회를 소진했습니다."));
 			return;
 		}
 
@@ -95,6 +95,6 @@ void ABGPlayerController::ClientPrintMessage_Implementation(const FString& Messa
 {
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, Message);
+		GEngine->AddOnScreenDebugMessage(-1, 300.f, FColor::Yellow, Message);
 	}
 }
