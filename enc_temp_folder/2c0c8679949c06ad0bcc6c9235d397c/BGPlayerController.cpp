@@ -31,7 +31,7 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 	{
 		if (PS->IsOutOfChances())
 		{
-			ClientShowNotification(TEXT("이미 모든 기회를 소진했습니다."));
+			ClientShowNotification(TEXT("You are already out of chances."));
 			return;
 		}
 
@@ -45,27 +45,23 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 		PS->AddGuessCount();
 		FString Result = GM->JudgeGuess(GM->GetSecretNumber(), InGuessString);
 
-		UE_LOG(LogTemp, Warning, TEXT("[%s] Guess: %s -> Result: %s %s"),
+		UE_LOG(LogTemp, Warning, TEXT("Player [%s] Guess: %s -> Result: %s %s"),
 			*PS->GetPlayerName(), *InGuessString, *Result, *PS->GetGuessStateString());
-
-		FString FeedbackMsg = FString::Printf(TEXT("[%s] 입력: %s -> %s %s"),
-			*PS->GetPlayerName(), *InGuessString, *Result, *PS->GetGuessStateString());
-		ClientPrintMessage(FeedbackMsg);
 
 		if (Result == TEXT("3S 0B"))
 		{
-			FString WinMsg = FString::Printf(TEXT("%s 승리!"), *PS->GetPlayerName());
+			FString WinMsg = FString::Printf(TEXT("Player %s WIN!"), *PS->GetPlayerName());
 			GM->BroadcastResultAndReset(WinMsg);
 		}
 
 		else if (GM->CheckAllPlayersOutOfChances())
 		{
-			GM->BroadcastResultAndReset(TEXT("무승부!"));
+			GM->BroadcastResultAndReset(TEXT("DRAW! All players are out of chances."));
 		}
 
 		else if (PS->IsOutOfChances())
 		{
-			ClientShowNotification(TEXT("기회를 전부 소진하여 다른 플레이어를 기다립니다.."));
+			ClientShowNotification(TEXT("Out of chances. Waiting for others..."));
 		}
 	}
 }
@@ -95,6 +91,6 @@ void ABGPlayerController::ClientPrintMessage_Implementation(const FString& Messa
 {
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 300.f, FColor::Yellow, Message);
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, Message);
 	}
 }

@@ -35,4 +35,7 @@ public:
 
 	UFUNCTION(Client, Reliable)
 	void ClientShowNotification(const FString& Message);
+
+	UFUNCTION(Client, Unreliable)
+	void ClientPrintMessage(const FString& Message);
 };

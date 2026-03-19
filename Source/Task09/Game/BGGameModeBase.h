@@ -21,20 +21,20 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	virtual void PostLogin(APlayerController* NewPlayer) override;
+
 	FString GenerateSecretNumber();
-
 	FString GetSecretNumber() const { return SecretNumberString; }
-
 	FString JudgeGuess(const FString& InSecretNumberString, const FString& InGuessNumberString);
 
-	bool IsValidNumberString(const FString& InNumberString);
-
+	bool IsValidNumberString(const FString& InNumberString, FString& OutErrorMessage);
 	bool CheckAllPlayersOutOfChances();
 
 	void ResetGame();
-
 	void BroadcastResultAndReset(const FString& ResultMessage);
 
 private:
 	FString SecretNumberString;
+
+	int32 ConnectedPlayerCount = 0;
 };
