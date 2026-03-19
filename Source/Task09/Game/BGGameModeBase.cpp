@@ -147,6 +147,5 @@ void ABGGameModeBase::BroadcastResultAndReset(const FString& ResultMessage)
 		}
 	}
 
-	SecretNumberString = GenerateSecretNumber();
-	UE_LOG(LogTemp, Warning, TEXT("[Server] Game Reset! New Secret Number: %s"), *SecretNumberString);
+	ResetGame();
 }
