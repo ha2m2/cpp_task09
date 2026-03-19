@@ -48,24 +48,20 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 		UE_LOG(LogTemp, Warning, TEXT("Player [%s] Guess: %s -> Result: %s %s"),
 			*PS->GetPlayerName(), *InGuessString, *Result, *PS->GetGuessStateString());
 
-		FString FeedbackMsg = FString::Printf(TEXT("Player [%s] 입력: %s -> %s %s"),
-			*PS->GetPlayerName(), *InGuessString, *Result, *PS->GetGuessStateString());
-		ClientPrintMessage(FeedbackMsg);
-
 		if (Result == TEXT("3S 0B"))
 		{
-			FString WinMsg = FString::Printf(TEXT("Player %s 승리!"), *PS->GetPlayerName());
+			FString WinMsg = FString::Printf(TEXT("Player %s WIN!"), *PS->GetPlayerName());
 			GM->BroadcastResultAndReset(WinMsg);
 		}
 
 		else if (GM->CheckAllPlayersOutOfChances())
 		{
-			GM->BroadcastResultAndReset(TEXT("무승부!"));
+			GM->BroadcastResultAndReset(TEXT("DRAW! All players are out of chances."));
 		}
 
 		else if (PS->IsOutOfChances())
 		{
-			ClientShowNotification(TEXT("기회를 전부 소진하여 다른 플레이어를 기다립니다.."));
+			ClientShowNotification(TEXT("Out of chances. Waiting for others..."));
 		}
 	}
 }
