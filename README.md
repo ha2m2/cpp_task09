@@ -1,7 +1,4 @@
 # cpp_task09
-
-# Unreal Engine Multiplayer Number Baseball
-
 **언리얼 엔진 C++ 기반 클라이언트-서버 멀티플레이어 숫자 야구 게임**
 
 ## 프로젝트 개요
