@@ -85,7 +85,4 @@ void ABGPlayerController::ClientShowNotification_Implementation(const FString& M
 			NotificationWidgetInstance->SetNotificationText(Message);
 		}
 	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("[NOTICE] %s"), *Message));
-	UE_LOG(LogTemp, Warning, TEXT("[Client] Notification: %s"), *Message);
 }
