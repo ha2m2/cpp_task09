@@ -45,16 +45,16 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 		PS->AddGuessCount();
 		FString Result = GM->JudgeGuess(GM->GetSecretNumber(), InGuessString);
 
-		UE_LOG(LogTemp, Warning, TEXT("Player [%s] Guess: %s -> Result: %s %s"),
+		UE_LOG(LogTemp, Warning, TEXT("[%s] Guess: %s -> Result: %s %s"),
 			*PS->GetPlayerName(), *InGuessString, *Result, *PS->GetGuessStateString());
 
-		FString FeedbackMsg = FString::Printf(TEXT("Player [%s] 입력: %s -> %s %s"),
+		FString FeedbackMsg = FString::Printf(TEXT("[%s] 입력: %s -> %s %s"),
 			*PS->GetPlayerName(), *InGuessString, *Result, *PS->GetGuessStateString());
 		ClientPrintMessage(FeedbackMsg);
 
 		if (Result == TEXT("3S 0B"))
 		{
-			FString WinMsg = FString::Printf(TEXT("Player %s 승리!"), *PS->GetPlayerName());
+			FString WinMsg = FString::Printf(TEXT("%s 승리!"), *PS->GetPlayerName());
 			GM->BroadcastResultAndReset(WinMsg);
 		}
 

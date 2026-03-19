@@ -20,6 +20,38 @@ void ABGGameModeBase::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("[Server] Generated Secret Number: %s"), *SecretNumberString);
 }
 
+void ABGGameModeBase::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	ConnectedPlayerCount++;
+	FString NewPlayerName = FString::Printf(TEXT("Player%d"), ConnectedPlayerCount);
+
+	ABGPlayerState* PS = NewPlayer->GetPlayerState<ABGPlayerState>();
+	if (PS)
+	{
+		PS->SetPlayerName(NewPlayerName);
+	}
+
+	FString JoinMsg = FString::Printf(TEXT("%s joined the game."), *NewPlayerName);
+	UE_LOG(LogTemp, Warning, TEXT("[Server] %s"), *JoinMsg);
+
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		ABGPlayerController* PC = Cast<ABGPlayerController>(It->Get());
+		if (PC)
+		{
+			PC->ClientPrintMessage(JoinMsg);
+		}
+	}
+
+	ABGPlayerController* NewPC = Cast<ABGPlayerController>(NewPlayer);
+	if (NewPC)
+	{
+		NewPC->ClientShowNotification(TEXT("Connected to the game server."));
+	}
+}
+
 FString ABGGameModeBase::GenerateSecretNumber()
 {
 	TArray<int32> Numbers;
