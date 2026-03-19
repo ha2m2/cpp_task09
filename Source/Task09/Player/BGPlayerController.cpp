@@ -35,14 +35,14 @@ void ABGPlayerController::ServerProcessGuess_Implementation(const FString& InGue
 			return;
 		}
 
-		if (!GM->IsValidNumberString(InGuessString))
+		FString ErrorMsg;
+		if (!GM->IsValidNumberString(InGuessString, ErrorMsg))
 		{
-			UE_LOG(LogTemp, Error, TEXT("[Server] Invalid Input from %s"), *PS->GetPlayerName());
+			ClientPrintMessage(ErrorMsg);
 			return;
 		}
 
 		PS->AddGuessCount();
-
 		FString Result = GM->JudgeGuess(GM->GetSecretNumber(), InGuessString);
 
 		UE_LOG(LogTemp, Warning, TEXT("Player [%s] Guess: %s -> Result: %s %s"),
@@ -84,5 +84,13 @@ void ABGPlayerController::ClientShowNotification_Implementation(const FString& M
 		{
 			NotificationWidgetInstance->SetNotificationText(Message);
 		}
+	}
+}
+
+void ABGPlayerController::ClientPrintMessage_Implementation(const FString& Message)
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, Message);
 	}
 }
