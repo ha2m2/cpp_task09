@@ -27,7 +27,7 @@ public:
 
 	FString JudgeGuess(const FString& InSecretNumberString, const FString& InGuessNumberString);
 
-	bool IsValidNumberString(const FString& InNumberString);
+	bool IsValidNumberString(const FString& InNumberString, FString& OutErrorMessage);
 
 	bool CheckAllPlayersOutOfChances();
 

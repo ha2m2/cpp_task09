@@ -73,10 +73,11 @@ FString ABGGameModeBase::JudgeGuess(const FString& InSecretNumberString, const F
 	return FString::Printf(TEXT("%dS %dB"), Strike, Ball);
 }
 
-bool ABGGameModeBase::IsValidNumberString(const FString& InNumberString)
+bool ABGGameModeBase::IsValidNumberString(const FString& InNumberString, FString& OutErrorMessage)
 {
 	if (InNumberString.Len() != 3)
 	{
+		OutErrorMessage = TEXT("3자리 숫자를 입력해주세요.");
 		return false;
 	}
 
@@ -87,6 +88,7 @@ bool ABGGameModeBase::IsValidNumberString(const FString& InNumberString)
 
 		if (c < '1' || c > '9')
 		{
+			OutErrorMessage = TEXT("1에서 9 사이의 숫자만 입력해주세요.");
 			return false;
 		}
 		UniqueChars.Add(c);
@@ -94,6 +96,7 @@ bool ABGGameModeBase::IsValidNumberString(const FString& InNumberString)
 
 	if (UniqueChars.Num() != 3)
 	{
+		OutErrorMessage = TEXT("중복되지 않은 숫자를 입력해주세요.");
 		return false;
 	}
 
